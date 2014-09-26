@@ -9,3 +9,16 @@ format [gregorian-calendar](https://github.com/kissyteam/gregorian-calendar) ins
 [![Dependency Status](https://gemnasium.com/kissyteam/gregorian-calendar-format.png)](https://gemnasium.com/kissyteam/gregorian-calendar-format)
 [![Bower version](https://badge.fury.io/bo/gregorian-calendar-format.svg)](http://badge.fury.io/bo/gregorian-calendar-format)
 [![node version](https://img.shields.io/badge/node.js-%3E=_0.11-green.svg?style=flat-square)](http://nodejs.org/download/)
+
+## use on node
+
+```javascript
+var DateTimeFormat = require('gregorian-calendar-format');
+var GregorianCalendar = require('gregorian-calendar');
+var gregorianCalendar = new GregorianCalendar(2013,
+    GregorianCalendar.JULY, 9);
+var df = new DateTimeFormat('yyyy-MM-dd');
+console.log(df.format(gregorianCalendar));
+df = new DateTimeFormat('yy-MM-dd');
+console.log(df.format(gregorianCalendar));
+```
