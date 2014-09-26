@@ -37,6 +37,7 @@ gulp.task('build', ['lint'], function () {
     };
     return gulp.src('./lib/' + tag + '.js')
         .pipe(modulex({
+            genDeps: false,
             modulex: {
                 packages: packages
             }
