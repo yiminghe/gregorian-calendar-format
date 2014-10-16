@@ -1,6 +1,6 @@
 {
   "name": "gregorian-calendar-format",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "yiminghe <yiminghe@gmail.com>",
   "engines": {
     "node": "~0.11"
@@ -53,6 +53,7 @@
     "node-jscover": "^0.6.8",
     "node-jscover-coveralls": "^1.0.10",
     "node-jscover-handler": "^1.0.3",
+    "gulp-wrapper": "^0.1.5",
     "precommit-hook": "^1.0.7"
   },
   "precommit": [
@@ -60,6 +61,7 @@
   ],
   "scripts": {
     "start": "node --harmony server",
+    "publish": "gulp tag",
     "test": "",
     "lint": "gulp lint",
     "browser-test": "mocha-phantomjs http://localhost:8026/tests/browser/runner.html",

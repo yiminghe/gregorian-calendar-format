@@ -15,8 +15,8 @@
     ],
     "dependencies": {
         "modulex": "modulex#master",
-        "modulex-feature": "modulex-feature#master",
-        "modulex-ua": "modulex-ua#master",
-        "gregorian-calendar":"gregorian-calendar#master"
+        "modulex-feature": "modulex-feature#1.x",
+        "modulex-ua": "modulex-ua#1.x",
+        "gregorian-calendar":"gregorian-calendar#1.x"
     }
 }
