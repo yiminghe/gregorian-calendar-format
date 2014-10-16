@@ -14,7 +14,7 @@
         "!index.js"
     ],
     "dependencies": {
-        "modulex": "modulex#master",
+        "modulex": "*",
         "modulex-feature": "modulex-feature#1.x",
         "modulex-ua": "modulex-ua#1.x",
         "gregorian-calendar":"gregorian-calendar#1.x"
