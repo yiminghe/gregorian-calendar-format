@@ -16,7 +16,7 @@
     "devDependencies": {
         "modulex": "*",
         "modulex-feature": "1.x",
-        "modulex-ua": "1.x",
+        "modulex-ua": "1.x"
     },
     "dependencies": {
         "gregorian-calendar":"1.x"
