@@ -1,6 +1,6 @@
 {
   "name": "gregorian-calendar-format",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "author": {
     "name": "yiminghe",
     "email": "yiminghe@gmail.com"
@@ -65,5 +65,10 @@
   },
   "dependencies": {
     "gregorian-calendar": "^2.0.2"
+  },
+  "spm": {
+    "dependencies": {
+      "gregorian-calendar": "^2.0.2"
+    }
   }
 }
