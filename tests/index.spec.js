@@ -3,10 +3,11 @@
  * @author yiminghe@gmail.com
  */
 
-var DateTimeFormat = require('../../../');
+var DateTimeFormat = require('../');
 var GregorianCalendar = require('gregorian-calendar');
 var zhCn = require('gregorian-calendar/lib/locale/zh-cn');
 var Style = DateTimeFormat.Style;
+var expect = require('expect.js');
 
 describe('DateTimeFormat', function () {
   describe('format', function () {
