@@ -1,6 +1,6 @@
 {
   "name": "gregorian-calendar-format",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "author": {
     "name": "yiminghe",
     "email": "yiminghe@gmail.com"
@@ -11,7 +11,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "http://github.com/kissyteam/gregorian-calendar-format"
+    "url": "http://github.com/yiminghe/gregorian-calendar-format"
   },
   "devDependencies": {
     "expect.js": "^0.3.1",
