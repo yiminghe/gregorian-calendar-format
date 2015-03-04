@@ -1,7 +1,6 @@
 bower_components/
-mx_modules/
 node_modules/
-*.cfg
+build/
 nohup.out
 *.iml
 .idea/
@@ -19,6 +18,13 @@ Thumbs.db
 .*proj
 .svn/
 *.swp
-_site/
-spm_modules/
-dist/
+out/
+.build
+_site
+sea-modules
+spm_modules
+.cache
+dist
+assets/**/*.less
+tests/
+examples/

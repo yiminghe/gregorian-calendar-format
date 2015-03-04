@@ -1,12 +1,21 @@
 {
   "name": "gregorian-calendar-format",
-  "version": "2.1.1",
+  "version": "3.0.0",
+  "description": "format utils for gregorian-calendar",
+  "keywords": [
+    "gregorian-calendar",
+    "format",
+    "moment",
+    "date",
+    "time",
+    "util"
+  ],
   "author": {
     "name": "yiminghe",
     "email": "yiminghe@gmail.com"
   },
   "engines": {
-    "node": "~0.11"
+    "node": ">=0.10"
   },
   "license": "MIT",
   "repository": {
@@ -16,8 +25,8 @@
   "devDependencies": {
     "expect.js": "^0.3.1",
     "precommit-hook": "^1.0.7",
-    "rc-server": "~1.5.9",
-    "rc-tools": "~1.1.5"
+    "rc-server": "2.x",
+    "rc-tools": "1.x"
   },
   "precommit": [
     "lint"
@@ -28,7 +37,7 @@
   "scripts": {
     "history": "rc-tools run history",
     "start": "node --harmony node_modules/.bin/rc-server",
-    "publish": "spm doc publish && spm publish && rc-tools run tag",
+    "publish": "spm publish && rc-tools run tag",
     "lint": "rc-tools run lint",
     "test": "",
     "saucelabs": "rc-tools run saucelabs",
@@ -36,11 +45,12 @@
     "browser-test-cover": "rc-tools run browser-test-cover"
   },
   "dependencies": {
-    "gregorian-calendar": "^2.0.2"
+    "gregorian-calendar": "3.x"
   },
   "spm": {
+    "output": ["lib/locale/*.js"],
     "dependencies": {
-      "gregorian-calendar": "^2.0.2"
+      "gregorian-calendar": "3.x"
     }
   }
 }

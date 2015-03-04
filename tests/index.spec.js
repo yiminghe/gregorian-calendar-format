@@ -24,35 +24,67 @@ describe('DateTimeFormat', function () {
       var gregorianCalendar = new GregorianCalendar(zhCn);
       gregorianCalendar.set(2013,
         GregorianCalendar.JULY, 11, 14, 31, 19);
-      var df = DateTimeFormat.getDateTimeInstance(Style.FULL, Style.FULL, require('gregorian-calendar/lib/locale/zh-cn'));
+      var df = DateTimeFormat.getDateTimeInstance(Style.FULL, Style.FULL, require('../lib/locale/zh-cn'));
       expect(df.format(gregorianCalendar)).to.be('2013年7月11日 星期四 下午02时31分19秒 GMT+0800');
     });
     it('getDateTimeInstance works for midnight', function () {
       var gregorianCalendar = new GregorianCalendar(zhCn);
       gregorianCalendar.set(2013,
         GregorianCalendar.JULY, 11, 0, 31, 19);
-      var df = DateTimeFormat.getDateTimeInstance(Style.FULL, Style.FULL, require('gregorian-calendar/lib/locale/zh-cn'));
+      var df = DateTimeFormat.getDateTimeInstance(Style.FULL, Style.FULL, require('../lib/locale/zh-cn'));
       expect(df.format(gregorianCalendar)).to.be('2013年7月11日 星期四 上午12时31分19秒 GMT+0800');
     });
     it('getDateTimeInstance works for noon', function () {
       var gregorianCalendar = new GregorianCalendar(zhCn);
       gregorianCalendar.set(2013,
         GregorianCalendar.JULY, 11, 12, 31, 19);
-      var df = DateTimeFormat.getDateTimeInstance(Style.FULL, Style.FULL, require('gregorian-calendar/lib/locale/zh-cn'));
+      var df = DateTimeFormat.getDateTimeInstance(Style.FULL, Style.FULL, require('../lib/locale/zh-cn'));
       expect(df.format(gregorianCalendar)).to.be('2013年7月11日 星期四 下午12时31分19秒 GMT+0800');
     });
   });
 
   describe('parse', function () {
-    it('simply works', function () {
+    it('zh-cn simply works', function () {
       var gregorianCalendar = new GregorianCalendar(zhCn);
       gregorianCalendar.set(2013,
         GregorianCalendar.JULY, 11, 12, 31, 19);
-      var df = DateTimeFormat.getDateTimeInstance(Style.FULL, Style.FULL, require('gregorian-calendar/lib/locale/zh-cn'));
+      var df = DateTimeFormat.getDateTimeInstance(Style.FULL, Style.FULL, require('../lib/locale/zh-cn'));
       var str = '2013年7月11日 星期四 下午12时31分19秒 GMT+0800';
+      var cal = df.parse(str, zhCn);
+      expect(cal.equals(gregorianCalendar)).to.be.ok();
+      expect(df.format(cal)).to.be(str);
+    });
+
+    it('en-us works', function () {
+      var gregorianCalendar = new GregorianCalendar();
+      gregorianCalendar.set(2013, GregorianCalendar.NOVEMBER, 1);
+      var df = new DateTimeFormat('yyyy-MM-dd');
+      var str = '2013-11-01';
       var cal = df.parse(str);
       expect(cal.equals(gregorianCalendar)).to.be.ok();
       expect(df.format(cal)).to.be(str);
+    });
+
+    describe('obeyCount', function () {
+      it('works', function () {
+        var gregorianCalendar = new GregorianCalendar();
+        gregorianCalendar.set(2013, GregorianCalendar.JANUARY, 1);
+        var df = new DateTimeFormat('yyyyMMddMMM');
+        var str = '20130101Jan';
+        var cal = df.parse(str);
+        expect(cal.equals(gregorianCalendar)).to.be.ok();
+        expect(df.format(cal)).to.be(str);
+      });
+
+      it('throw error', function () {
+        var gregorianCalendar = new GregorianCalendar();
+        gregorianCalendar.set(2013, GregorianCalendar.JANUARY, 1);
+        var df = new DateTimeFormat('yyyyMMddMMM');
+        var str = '2013011Jan';
+        expect(function () {
+          df.parse(str);
+        }).throwError(/GregorianCalendarFormat parse error/);
+      });
     });
   });
 });
