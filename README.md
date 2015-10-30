@@ -4,7 +4,6 @@
 format [gregorian-calendar](https://github.com/yiminghe/gregorian-calendar) instance
 
 [![gregorian-calendar-format](https://nodei.co/npm/gregorian-calendar-format.png)](https://npmjs.org/package/gregorian-calendar-format)
-[![SPM version](http://spmjs.io/badge/gregorian-calendar-format)](http://spmjs.io/package/gregorian-calendar-format)
 [![NPM downloads](http://img.shields.io/npm/dm/gregorian-calendar-format.svg)](https://npmjs.org/package/gregorian-calendar-format)
 [![Build Status](https://secure.travis-ci.org/yiminghe/gregorian-calendar-format.png?branch=master)](https://travis-ci.org/yiminghe/gregorian-calendar-format)
 [![Coverage Status](https://img.shields.io/coveralls/yiminghe/gregorian-calendar-format.svg)](https://coveralls.io/r/yiminghe/gregorian-calendar-format?branch=master)

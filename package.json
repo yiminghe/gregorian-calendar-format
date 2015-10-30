@@ -1,6 +1,6 @@
 {
   "name": "gregorian-calendar-format",
-  "version": "3.0.1",
+  "version": "3.1.0",
   "description": "format utils for gregorian-calendar",
   "keywords": [
     "gregorian-calendar",
@@ -37,7 +37,7 @@
   "scripts": {
     "history": "rc-tools run history",
     "start": "node --harmony node_modules/.bin/rc-server",
-    "publish": "spm publish && rc-tools run tag",
+    "publish": "rc-tools run tag",
     "lint": "rc-tools run lint",
     "test": "",
     "saucelabs": "rc-tools run saucelabs",
@@ -46,11 +46,5 @@
   },
   "dependencies": {
     "gregorian-calendar": "3.x"
-  },
-  "spm": {
-    "output": ["lib/locale/*.js"],
-    "dependencies": {
-      "gregorian-calendar": "3.x"
-    }
   }
 }
