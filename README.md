@@ -159,7 +159,7 @@ console.log(df.format(gregorianCalendar));
 
 such as "yyyy-MM-dd'日'" will parse and format "2013-11-12日" "2013-01-02日". (content inside '' will preserve)
 
-* locale: require('gregorian-calendar-format/locale/en-us') or require('gregorian-calendar-format/locale/zh-cn') specify text when render localize date time string.
+* locale: require('gregorian-calendar-format/locale/en_US') or require('gregorian-calendar-format/locale/zh_CN') specify text when render localize date time string.
 
 #### String GregorianCalendarFormat.prototype.format(calendar: GregorianCalendar)
 
@@ -170,7 +170,7 @@ format an instance of GregorianCalendar according to pattern
 parse a dateString to an instance of GregorianCalendar according to pattern, it's better to specify calendarLocale, such as
 
 ```js
-df.parse('2013-11-12', require('gregorian-calendar/lib/locale/zh-cn'));
+df.parse('2013-11-12', require('gregorian-calendar/lib/locale/zh_CN'));
 ```
 
 ### GregorianCalendarFormat GregorianCalendarFormat.getDateTimeInstance(dateStyle,timeStyle,locale)
@@ -178,27 +178,27 @@ df.parse('2013-11-12', require('gregorian-calendar/lib/locale/zh-cn'));
 get a predefine GregorianCalendarFormat instance
 
 * dateStyle: enum of predefined date style, enums:
- - en-us:
+ - en_US:
    - GregorianCalendarFormat.Style.FULL presents EEEE, MMMM d, yyyy
    - GregorianCalendarFormat.Style.LONG presents MMMM d, yyyy
    - GregorianCalendarFormat.Style.MEDIUM presents MMM d, yyyy
    - GregorianCalendarFormat.Style.SHORT presents M/d/yy
- - zh-cn:
+ - zh_CN:
    - GregorianCalendarFormat.Style.FULL presents "yyyy'年'M'月'd'日' EEEE"
    - GregorianCalendarFormat.Style.LONG presents "yyyy'年'M'月'd'日'"
    - GregorianCalendarFormat.Style.MEDIUM presents "yyyy-M-d"
    - GregorianCalendarFormat.Style.SHORT presents "yy-M-d"
 
 * timeStyle: enum of predefined date style, enums:
- - en-us:
+ - en_US:
    - GregorianCalendarFormat.Style.FULL presents 'h:mm:ss a \'GMT\'Z'
    - GregorianCalendarFormat.Style.LONG presents 'h:mm:ss a'
    - GregorianCalendarFormat.Style.MEDIUM presents 'h:mm:ss a'
    - GregorianCalendarFormat.Style.SHORT presents 'h:mm a'
- - zh-cn:
+ - zh_CN:
    - GregorianCalendarFormat.Style.FULL presents "ahh'时'mm'分'ss'秒' 'GMT'Z"
    - GregorianCalendarFormat.Style.LONG presents "ahh'时'mm'分'ss'秒'"
    - GregorianCalendarFormat.Style.MEDIUM presents "H:mm:ss"
    - GregorianCalendarFormat.Style.SHORT presents "ah:mm"
 
-* locale: require('gregorian-calendar-format/locale/en-us') or require('gregorian-calendar-format/locale/zh-cn') specify text when render localize date time string.
+* locale: require('gregorian-calendar-format/locale/en_US') or require('gregorian-calendar-format/locale/zh_CN') specify text when render localize date time string.
