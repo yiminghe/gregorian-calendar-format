@@ -165,15 +165,15 @@ such as "yyyy-MM-dd'日'" will parse and format "2013-11-12日" "2013-01-02日".
 
 format an instance of GregorianCalendar according to pattern
 
-#### GregorianCalendar GregorianCalendarFormat.prototype.parse(dateString: String, calendarLocale)
+#### GregorianCalendar GregorianCalendarFormat.prototype.parse(dateString: String, {locale: object})
 
 parse a dateString to an instance of GregorianCalendar according to pattern, it's better to specify calendarLocale, such as
 
 ```js
-df.parse('2013-11-12', require('gregorian-calendar/lib/locale/zh_CN'));
+df.parse('2013-11-12', {locale: require('gregorian-calendar/lib/locale/zh_CN'}));
 ```
 
-### GregorianCalendarFormat GregorianCalendarFormat.getDateTimeInstance(dateStyle,timeStyle,locale)
+### GregorianCalendarFormat GregorianCalendarFormat.getDateTimeInstance(dateStyle, timeStyle, locale)
 
 get a predefine GregorianCalendarFormat instance
 

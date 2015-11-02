@@ -50,7 +50,7 @@ describe('DateTimeFormat', function () {
         GregorianCalendar.JULY, 11, 12, 31, 19);
       var df = DateTimeFormat.getDateTimeInstance(Style.FULL, Style.FULL, require('../lib/locale/zh_CN'));
       var str = '2013年7月11日 星期四 下午12时31分19秒 GMT+0800';
-      var cal = df.parse(str, zhCn);
+      var cal = df.parse(str, {locale:zhCn});
       expect(cal.equals(gregorianCalendar)).to.be.ok();
       expect(df.format(cal)).to.be(str);
     });
