@@ -1,8 +1,3 @@
-/**
- * en-us locale
- * @ignore
- * @author yiminghe@gmail.com
- */
 module.exports = {
   eras: ['BC', 'AD'],
   months: ['January', 'February', 'March', 'April', 'May', 'June', 'July',
@@ -16,5 +11,5 @@ module.exports = {
   ampms: ['AM', 'PM'],
   datePatterns: ['EEEE, MMMM d, yyyy', 'MMMM d, yyyy', 'MMM d, yyyy', 'M/d/yy'],
   timePatterns: ['h:mm:ss a \'GMT\'Z', 'h:mm:ss a', 'h:mm:ss a', 'h:mm a'],
-  dateTimePattern: '{date} {time}'
+  dateTimePattern: '{date} {time}',
 };

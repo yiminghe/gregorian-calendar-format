@@ -1,1 +1,1 @@
-module.exports = require('./lib/gregorian-calendar-format');
+module.exports = require('./src/gregorian-calendar-format');

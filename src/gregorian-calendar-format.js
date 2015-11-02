@@ -5,14 +5,16 @@
  * @author yiminghe@gmail.com
  */
 
-var GregorianCalendar = require('gregorian-calendar');
-var enUsLocale = require('./locale/en_US');
-var MAX_VALUE = Number.MAX_VALUE;
+const GregorianCalendar = require('gregorian-calendar');
+const enUsLocale = require('./locale/en_US');
+const MAX_VALUE = Number.MAX_VALUE;
+const warning = require('warning');
+
 /**
  * date or time style enum
  * @enum {Number} Date.Formatter.Style
  */
-var DateTimeStyle = {
+const DateTimeStyle = {
   /**
    * full style
    */
@@ -28,7 +30,7 @@ var DateTimeStyle = {
   /**
    * short style
    */
-  SHORT: 3
+  SHORT: 3,
 };
 
 /*
@@ -54,9 +56,9 @@ var DateTimeStyle = {
  Z    Time zone    RFC 822 time zone    -0800
  */
 
-var patternChars = new Array(GregorianCalendar.DAY_OF_WEEK_IN_MONTH + 2).join('1');
-var ERA = 0;
-var calendarIndexMap = {};
+let patternChars = new Array(GregorianCalendar.DAY_OF_WEEK_IN_MONTH + 2).join('1');
+const ERA = 0;
+const calendarIndexMap = {};
 
 patternChars = patternChars.split('');
 patternChars[ERA] = 'G';
@@ -72,27 +74,31 @@ patternChars[GregorianCalendar.WEEK_OF_MONTH] = 'W';
 patternChars[GregorianCalendar.DAY_OF_YEAR] = 'D';
 patternChars[GregorianCalendar.DAY_OF_WEEK_IN_MONTH] = 'F';
 
-(function () {
-  for (var index in patternChars) {
-    calendarIndexMap[patternChars[index]] = index;
+(function init() {
+  for (const index in patternChars) {
+    if (patternChars.hasOwnProperty(index)) {
+      calendarIndexMap[patternChars[index]] = index;
+    }
   }
 })();
 
 function mix(t, s) {
-  for (var p in s) {
-    t[p] = s[p];
+  for (const p in s) {
+    if (s.hasOwnProperty(p)) {
+      t[p] = s[p];
+    }
   }
 }
 
-var SUBSTITUTE_REG = /\\?\{([^{}]+)\}/g;
-var EMPTY = '';
+const SUBSTITUTE_REG = /\\?\{([^{}]+)\}/g;
+const EMPTY = '';
 
 function substitute(str, o, regexp) {
   if (typeof str !== 'string' || !o) {
     return str;
   }
 
-  return str.replace(regexp || SUBSTITUTE_REG, function (match, name) {
+  return str.replace(regexp || SUBSTITUTE_REG, (match, name) => {
     if (match.charAt(0) === '\\') {
       return match.slice(1);
     }
@@ -105,20 +111,20 @@ patternChars = patternChars.join('') + 'ahkKZE';
 function encode(lastField, count, compiledPattern) {
   compiledPattern.push({
     field: lastField,
-    count: count
+    count: count,
   });
 }
 
 function compile(pattern) {
-  var length = pattern.length;
-  var inQuote = false;
-  var compiledPattern = [];
-  var tmpBuffer = null;
-  var count = 0;
-  var lastField = -1;
+  const length = pattern.length;
+  let inQuote = false;
+  const compiledPattern = [];
+  let tmpBuffer = null;
+  let count = 0;
+  let lastField = -1;
 
-  for (var i = 0; i < length; i++) {
-    var c = pattern.charAt(i);
+  for (let i = 0; i < length; i++) {
+    let c = pattern.charAt(i);
 
     if (c === '\'') {
       // '' is treated as a single quote regardless of being
@@ -148,7 +154,7 @@ function compile(pattern) {
         inQuote = true;
       } else {
         compiledPattern.push({
-          text: tmpBuffer
+          text: tmpBuffer,
         });
         inQuote = false;
       }
@@ -165,7 +171,7 @@ function compile(pattern) {
         count = 0;
       }
       compiledPattern.push({
-        text: c
+        text: c,
       });
       continue;
     }
@@ -195,16 +201,16 @@ function compile(pattern) {
   return compiledPattern;
 }
 
-var zeroDigit = '0';
+const zeroDigit = '0';
 
 // TODO zeroDigit localization??
-function zeroPaddingNumber(value, minDigits, maxDigits, buffer) {
+function zeroPaddingNumber(value, minDigits, maxDigits_, b) {
   // Optimization for 1, 2 and 4 digit numbers. This should
   // cover most cases of formatting date/time related items.
   // Note: This optimization code assumes that maxDigits is
   // either 2 or Integer.MAX_VALUE (maxIntCount in format()).
-  buffer = buffer || [];
-  maxDigits = maxDigits || MAX_VALUE;
+  const buffer = b || [];
+  const maxDigits = maxDigits_ || MAX_VALUE;
   if (value >= 0) {
     if (value < 100 && minDigits >= 1 && minDigits <= 2) {
       if (value < 10 && minDigits === 2) {
@@ -232,9 +238,9 @@ function zeroPaddingNumber(value, minDigits, maxDigits, buffer) {
  *
  *      @example
  *
- *          var calendar = new GregorianCalendar(2013,9,24);
+ *          const calendar = new GregorianCalendar(2013,9,24);
  *          // ' to escape
- *          var formatter = new GregorianCalendarFormat("'today is' ''yyyy/MM/dd a''");
+ *          const formatter = new GregorianCalendarFormat("'today is' ''yyyy/MM/dd a''");
  *          document.write(formatter.format(calendar));
  *
  * @class GregorianCalendarFormat
@@ -356,8 +362,8 @@ function DateTimeFormat(pattern, locale) {
 }
 
 function formatField(field, count, locale, calendar) {
-  var current,
-    value;
+  let current;
+  let value;
   switch (field) {
   case 'G':
     value = calendar.getYear() > 0 ? 1 : 0;
@@ -404,8 +410,8 @@ function formatField(field, count, locale, calendar) {
         getHourOfDay() % 12, count);
     break;
   case 'Z':
-    var offset = calendar.getTimezoneOffset();
-    var parts = [offset < 0 ? '-' : '+'];
+    let offset = calendar.getTimezoneOffset();
+    const parts = [offset < 0 ? '-' : '+'];
     offset = Math.abs(offset);
     parts.push(zeroPaddingNumber(Math.floor(offset / 60) % 100, 2),
       zeroPaddingNumber(offset % 60, 2));
@@ -421,21 +427,30 @@ function formatField(field, count, locale, calendar) {
     // case 'F':
     // case 'w':
     // case 'W':
-    var index = calendarIndexMap[field];
+    const index = calendarIndexMap[field];
     value = calendar.get(index);
     current = zeroPaddingNumber(value, count);
   }
   return current;
 }
 
+function matchPartString(dateStr, startIndex, match, mLen) {
+  for (let i = 0; i < mLen; i++) {
+    if (dateStr.charAt(startIndex + i) !== match.charAt(i)) {
+      return false;
+    }
+  }
+  return true;
+}
+
 function matchField(dateStr, startIndex, matches) {
-  var matchedLen = -1;
-  var index = -1;
-  var i;
-  var len = matches.length;
+  let matchedLen = -1;
+  let index = -1;
+  let i;
+  const len = matches.length;
   for (i = 0; i < len; i++) {
-    var m = matches[i];
-    var mLen = m.length;
+    const m = matches[i];
+    const mLen = m.length;
     if (mLen > matchedLen &&
       matchPartString(dateStr, startIndex, m, mLen)) {
       matchedLen = mLen;
@@ -444,22 +459,14 @@ function matchField(dateStr, startIndex, matches) {
   }
   return index >= 0 ? {
     value: index,
-    startIndex: startIndex + matchedLen
+    startIndex: startIndex + matchedLen,
   } : null;
 }
 
-function matchPartString(dateStr, startIndex, match, mLen) {
-  for (var i = 0; i < mLen; i++) {
-    if (dateStr.charAt(startIndex + i) !== match.charAt(i)) {
-      return false;
-    }
-  }
-  return true;
-}
-
 function getLeadingNumberLen(str) {
-  var i, c;
-  var len = str.length;
+  let i;
+  let c;
+  const len = str.length;
   for (i = 0; i < len; i++) {
     c = str.charAt(i);
     if (c < '0' || c > '9') {
@@ -470,8 +477,8 @@ function getLeadingNumberLen(str) {
 }
 
 function matchNumber(dateStr, startIndex, count, obeyCount) {
-  var str = dateStr;
-  var n;
+  let str = dateStr;
+  let n;
   if (obeyCount) {
     if (dateStr.length < startIndex + count) {
       return null;
@@ -489,19 +496,23 @@ function matchNumber(dateStr, startIndex, count, obeyCount) {
   }
   return {
     value: n,
-    startIndex: startIndex + getLeadingNumberLen(str)
+    startIndex: startIndex + getLeadingNumberLen(str),
   };
 }
 
-function parseField(calendar, dateStr, startIndex, field, count, obeyCount, tmp) {
-  var match, year, hour;
+function parseField(calendar, dateStr, startIndex_, field, count, obeyCount, tmp) {
+  let match;
+  let year;
+  let hour;
+  let startIndex = startIndex_;
   if (dateStr.length <= startIndex) {
     return startIndex;
   }
-  var locale = this.locale;
+  const locale = this.locale;
   switch (field) {
   case 'G':
-    if ((match = matchField(dateStr, startIndex, locale.eras))) {
+    match = matchField(dateStr, startIndex, locale.eras);
+    if (match) {
       if (calendar.isSetYear()) {
         if (match.value === 0) {
           year = calendar.getYear();
@@ -513,7 +524,8 @@ function parseField(calendar, dateStr, startIndex, field, count, obeyCount, tmp)
     }
     break;
   case 'y':
-    if ((match = matchNumber.call(this, dateStr, startIndex, count, obeyCount))) {
+    match = matchNumber.call(this, dateStr, startIndex, count, obeyCount);
+    if (match) {
       year = match.value;
       if ('era' in tmp) {
         if (tmp.era === 0) {
@@ -524,14 +536,16 @@ function parseField(calendar, dateStr, startIndex, field, count, obeyCount, tmp)
     }
     break;
   case 'M':
-    var month;
+    let month;
     if (count >= 3) {
-      if ((match = matchField(dateStr, startIndex, locale[count === 3 ?
-          'shortMonths' : 'months']))) {
+      match = matchField(dateStr, startIndex, locale[count === 3 ?
+        'shortMonths' : 'months']);
+      if (match) {
         month = match.value;
       }
     } else {
-      if ((match = matchNumber.call(this, dateStr, startIndex, count, obeyCount))) {
+      match = matchNumber.call(this, dateStr, startIndex, count, obeyCount);
+      if (match) {
         month = match.value - 1;
       }
     }
@@ -540,19 +554,22 @@ function parseField(calendar, dateStr, startIndex, field, count, obeyCount, tmp)
     }
     break;
   case 'k':
-    if ((match = matchNumber.call(this, dateStr, startIndex, count, obeyCount))) {
+    match = matchNumber.call(this, dateStr, startIndex, count, obeyCount);
+    if (match) {
       calendar.setHourOfDay(match.value % 24);
     }
     break;
   case 'E':
-    if ((match = matchField(dateStr, startIndex, locale[count > 3 ?
-        'weekdays' :
-        'shortWeekdays']))) {
+    match = matchField(dateStr, startIndex, locale[count > 3 ?
+      'weekdays' :
+      'shortWeekdays']);
+    if (match) {
       calendar.setDayOfWeek(match.value);
     }
     break;
   case 'a':
-    if ((match = matchField(dateStr, startIndex, locale.ampms))) {
+    match = matchField(dateStr, startIndex, locale.ampms);
+    if (match) {
       if (calendar.isSetHourOfDay()) {
         if (match.value) {
           hour = calendar.getHourOfDay();
@@ -566,7 +583,8 @@ function parseField(calendar, dateStr, startIndex, field, count, obeyCount, tmp)
     }
     break;
   case 'h':
-    if ((match = matchNumber.call(this, dateStr, startIndex, count, obeyCount))) {
+    match = matchNumber.call(this, dateStr, startIndex, count, obeyCount);
+    if (match) {
       hour = match.value %= 12;
       if (tmp.ampm) {
         hour += 12;
@@ -575,7 +593,8 @@ function parseField(calendar, dateStr, startIndex, field, count, obeyCount, tmp)
     }
     break;
   case 'K':
-    if ((match = matchNumber.call(this, dateStr, startIndex, count, obeyCount))) {
+    match = matchNumber.call(this, dateStr, startIndex, count, obeyCount);
+    if (match) {
       hour = match.value;
       if (tmp.ampm) {
         hour += 12;
@@ -584,20 +603,22 @@ function parseField(calendar, dateStr, startIndex, field, count, obeyCount, tmp)
     }
     break;
   case 'Z':
-    var sign = 1;
-    var zoneChar = dateStr.charAt(startIndex);
+    // let sign = 1;
+    const zoneChar = dateStr.charAt(startIndex);
     if (zoneChar === '-') {
-      sign = -1;
+      // sign = -1;
       startIndex++;
     } else if (zoneChar === '+') {
       startIndex++;
     } else {
       break;
     }
-    if ((match = matchNumber.call(this, dateStr, startIndex, 2, true))) {
-      var zoneOffset = match.value * 60;
+    match = matchNumber.call(this, dateStr, startIndex, 2, true);
+    if (match) {
+      let zoneOffset = match.value * 60;
       startIndex = match.startIndex;
-      if ((match = matchNumber.call(this, dateStr, startIndex, 2, true))) {
+      match = matchNumber.call(this, dateStr, startIndex, 2, true);
+      if (match) {
         zoneOffset += match.value;
       }
       calendar.setTimezoneOffset(zoneOffset);
@@ -613,8 +634,9 @@ function parseField(calendar, dateStr, startIndex, field, count, obeyCount, tmp)
     // case 'F':
     // case 'w':
     // case 'W'
-    if ((match = matchNumber.call(this, dateStr, startIndex, count, obeyCount))) {
-      var index = calendarIndexMap[field];
+    match = matchNumber.call(this, dateStr, startIndex, count, obeyCount);
+    if (match) {
+      const index = calendarIndexMap[field];
       calendar.set(index, match.value);
     }
   }
@@ -625,21 +647,21 @@ function parseField(calendar, dateStr, startIndex, field, count, obeyCount, tmp)
 }
 
 mix(DateTimeFormat.prototype, {
-  /**
+  /*
    * format a GregorianDate instance according to specified pattern
    * @param {GregorianCalendar} calendar GregorianDate instance
    * @returns {string} formatted string of GregorianDate instance
    */
-  format: function (calendar) {
+  format(calendar) {
     if (!calendar.isGregorianCalendar) {
       throw new Error('calendar must be type of GregorianCalendar');
     }
-    var i;
-    var ret = [];
-    var pattern = this.pattern;
-    var len = pattern.length;
+    let i;
+    const ret = [];
+    const pattern = this.pattern;
+    const len = pattern.length;
     for (i = 0; i < len; i++) {
-      var comp = pattern[i];
+      const comp = pattern[i];
       if (comp.text) {
         ret.push(comp.text);
       } else if ('field' in comp) {
@@ -649,31 +671,34 @@ mix(DateTimeFormat.prototype, {
     return ret.join('');
   },
 
-  /**
+  /*
    * parse a formatted string of GregorianDate instance according to specified pattern
    * @param {String} dateStr formatted string of GregorianDate
    * @returns {GregorianCalendar}
    */
-  parse: function (dateStr, option) {
-    option = option || {};
-    var calendarLocale = option.locale;
-    var calendar = new GregorianCalendar(calendarLocale);
-    var i;
-    var j;
-    var tmp = {};
-    var obeyCount = option.obeyCount || false;
-    var dateStrLen = dateStr.length;
-    var errorIndex = -1;
-    var startIndex = 0;
-    var oldStartIndex = 0;
-    var pattern = this.pattern;
-    var len = pattern.length;
-
+  parse(dateStr, option_) {
+    const option = option_ || {};
+    const calendarLocale = option.locale;
+    const calendar = new GregorianCalendar(calendarLocale);
+    let i;
+    let j;
+    const tmp = {};
+    let obeyCount = option.obeyCount || false;
+    const dateStrLen = dateStr.length;
+    let errorIndex = -1;
+    let startIndex = 0;
+    let oldStartIndex = 0;
+    const pattern = this.pattern;
+    const len = pattern.length;
+    /* eslint no-labels: 0 no-empty-label:0 */
     loopPattern: {
       for (i = 0; errorIndex < 0 && i < len; i++) {
-        var comp = pattern[i], text, textLen;
+        const comp = pattern[i];
+        let text;
+        let textLen;
         oldStartIndex = startIndex;
-        if ((text = comp.text)) {
+        text = comp.text;
+        if (text) {
           textLen = text.length;
           if ((textLen + startIndex) > dateStrLen) {
             errorIndex = startIndex;
@@ -688,13 +713,13 @@ mix(DateTimeFormat.prototype, {
           }
         } else if ('field' in comp) {
           if (!option.obeyCount) {
-            var nextComp = pattern[i + 1];
+            const nextComp = pattern[i + 1];
             obeyCount = false;
             if (nextComp) {
               if ('field' in nextComp) {
                 obeyCount = true;
               } else {
-                var c = nextComp.text.charAt(0);
+                const c = nextComp.text.charAt(0);
                 if (c >= '0' && c <= '9') {
                   obeyCount = true;
                 }
@@ -716,19 +741,17 @@ mix(DateTimeFormat.prototype, {
     }
 
     if (errorIndex >= 0) {
-      console.error('error when parsing date');
-      console.error(dateStr);
-      console.error(dateStr.slice(0, errorIndex) + '^');
+      warning(false, 'error when parsing date: ' + dateStr + ', position: ' + dateStr.slice(0, errorIndex) + '^');
       return undefined;
     }
     return calendar;
-  }
+  },
 });
 
 mix(DateTimeFormat, {
   Style: DateTimeStyle,
 
-  /**
+  /*
    * get a formatter instance of short style pattern.
    * en-us: M/d/yy h:mm a
    * zh-cn: yy-M-d ah:mm
@@ -736,22 +759,22 @@ mix(DateTimeFormat, {
    * @returns {GregorianCalendar}
    * @static
    */
-  getInstance: function (locale) {
+  getInstance(locale) {
     return this.getDateTimeInstance(DateTimeStyle.SHORT, DateTimeStyle.SHORT, locale);
   },
 
-  /**
+  /*
    * get a formatter instance of specified date style.
    * @param {Date.Formatter.Style} dateStyle date format style
    * @param {Object} locale
    * @returns {GregorianCalendar}
    * @static
    */
-  getDateInstance: function (dateStyle, locale) {
+  getDateInstance(dateStyle, locale) {
     return this.getDateTimeInstance(dateStyle, undefined, locale);
   },
 
-  /**
+  /*
    * get a formatter instance of specified date style and time style.
    * @param {Date.Formatter.Style} dateStyle date format style
    * @param {Date.Formatter.Style} timeStyle time format style
@@ -759,22 +782,22 @@ mix(DateTimeFormat, {
    * @returns {GregorianCalendar}
    * @static
    */
-  getDateTimeInstance: function (dateStyle, timeStyle, locale) {
-    locale = locale || enUsLocale;
-    var datePattern = '';
+  getDateTimeInstance(dateStyle, timeStyle, locale_) {
+    const locale = locale_ || enUsLocale;
+    let datePattern = '';
     if (dateStyle !== undefined) {
       datePattern = locale.datePatterns[dateStyle];
     }
-    var timePattern = '';
+    let timePattern = '';
     if (timeStyle !== undefined) {
       timePattern = locale.timePatterns[timeStyle];
     }
-    var pattern = datePattern;
+    let pattern = datePattern;
     if (timePattern) {
       if (datePattern) {
         pattern = substitute(locale.dateTimePattern, {
           date: datePattern,
-          time: timePattern
+          time: timePattern,
         });
       } else {
         pattern = timePattern;
@@ -783,16 +806,16 @@ mix(DateTimeFormat, {
     return new DateTimeFormat(pattern, locale);
   },
 
-  /**
+  /*
    * get a formatter instance of specified time style.
    * @param {Date.Formatter.Style} timeStyle time format style
    * @param {Object} locale
    * @returns {GregorianCalendar}
    * @static
    */
-  getTimeInstance: function (timeStyle, locale) {
+  getTimeInstance(timeStyle, locale) {
     return this.getDateTimeInstance(undefined, timeStyle, locale);
-  }
+  },
 });
 
 module.exports = DateTimeFormat;

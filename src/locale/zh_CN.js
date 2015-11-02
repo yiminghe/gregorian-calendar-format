@@ -1,8 +1,3 @@
-/**
- * zh-cn locale
- * @ignore
- * @author yiminghe@gmail.com
- */
 module.exports = {
   eras: ['公元前', '公元'],
   months: ['一月', '二月', '三月', '四月', '五月', '六月',
@@ -15,8 +10,7 @@ module.exports = {
     '周六'],
   veryShortWeekdays: ['日', '一', '二', '三', '四', '五', '六'],
   ampms: ['上午', '下午'],
-  /*jshint quotmark: false*/
-  datePatterns: ["yyyy'年'M'月'd'日' EEEE", "yyyy'年'M'月'd'日'", "yyyy-M-d", "yy-M-d"],
-  timePatterns: ["ahh'时'mm'分'ss'秒' 'GMT'Z", "ahh'时'mm'分'ss'秒'", "H:mm:ss", "ah:mm"],
-  dateTimePattern: '{date} {time}'
+  datePatterns: ['yyyy\'年\'M\'月\'d\'日\' EEEE', 'yyyy\'年\'M\'月\'d\'日\'', 'yyyy-M-d', 'yy-M-d'],
+  timePatterns: ['ahh\'时\'mm\'分\'ss\'秒\' \'GMT\'Z', 'ahh\'时\'mm\'分\'ss\'秒\'', 'H:mm:ss', 'ah:mm'],
+  dateTimePattern: '{date} {time}',
 };
