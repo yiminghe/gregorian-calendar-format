@@ -9,9 +9,6 @@ format [gregorian-calendar](https://github.com/yiminghe/gregorian-calendar) inst
 [![Coverage Status](https://img.shields.io/coveralls/yiminghe/gregorian-calendar-format.svg)](https://coveralls.io/r/yiminghe/gregorian-calendar-format?branch=master)
 [![Dependency Status](https://gemnasium.com/yiminghe/gregorian-calendar-format.png)](https://gemnasium.com/yiminghe/gregorian-calendar-format)
 [![node version](https://img.shields.io/badge/node.js-%3E=_0.11-green.svg?style=flat-square)](http://nodejs.org/download/)
-[![Sauce Test Status](https://saucelabs.com/buildstatus/gc-format)](https://saucelabs.com/u/gc-format)
-
-[![Sauce Test Status](https://saucelabs.com/browser-matrix/gc-format.svg)](https://saucelabs.com/u/gc-format)
 
 
 ## use on node

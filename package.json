@@ -1,6 +1,6 @@
 {
   "name": "gregorian-calendar-format",
-  "version": "3.1.0",
+  "version": "4.0.0",
   "description": "format utils for gregorian-calendar",
   "keywords": [
     "gregorian-calendar",
@@ -14,9 +14,10 @@
     "name": "yiminghe",
     "email": "yiminghe@gmail.com"
   },
-  "engines": {
-    "node": ">=0.10"
-  },
+  "files": [
+    "lib"
+  ],
+  "main":"./lib/gregorian-calendar-format",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -24,11 +25,11 @@
   },
   "devDependencies": {
     "expect.js": "^0.3.1",
-    "precommit-hook": "^1.0.7",
+    "pre-commit": "1.x",
     "rc-server": "2.x",
     "rc-tools": "1.x"
   },
-  "precommit": [
+  "pre-commit": [
     "lint"
   ],
   "config": {
