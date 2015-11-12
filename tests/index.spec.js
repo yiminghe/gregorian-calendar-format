@@ -85,6 +85,13 @@ describe('DateTimeFormat', function () {
           df.parse(str);
         }).throwError(/GregorianCalendarFormat parse error/);
       });
+
+      it('allow ignore year', function(){
+        const timeFormatter = new DateTimeFormat('HH:mm:ss');
+        const value = timeFormatter.parse('17:47:58');
+        const string = timeFormatter.format(value);
+        expect(string).to.be('17:47:58');
+      });
     });
   });
 });
