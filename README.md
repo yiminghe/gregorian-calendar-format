@@ -53,6 +53,12 @@ console.log(df.format(gregorianCalendar));
             <td>1996; 96</td>
         </tr>
         <tr>
+            <td>Y</td>
+            <td>WeekYear</td>
+            <td>WeekYear</td>
+            <td>1996; 96</td>
+        </tr>
+        <tr>
             <td>M</td>
             <td>Month in year</td>
             <td>Month</td>

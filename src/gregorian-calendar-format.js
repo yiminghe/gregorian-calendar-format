@@ -37,6 +37,7 @@ const DateTimeStyle = {
  Letter    Date or Time Component    Presentation    Examples
  G    Era designator    Text    AD
  y    Year    Year    1996; 96
+ Y    WeekYear    WeekYear    1996; 96
  M    Month in year    Month    July; Jul; 07
  w    Week in year    Number    27
  W    Week in month    Number    2
@@ -73,14 +74,17 @@ patternChars[GregorianCalendar.WEEK_OF_YEAR] = 'w';
 patternChars[GregorianCalendar.WEEK_OF_MONTH] = 'W';
 patternChars[GregorianCalendar.DAY_OF_YEAR] = 'D';
 patternChars[GregorianCalendar.DAY_OF_WEEK_IN_MONTH] = 'F';
+patternChars.push('Y');
 
-(function init() {
-  for (const index in patternChars) {
-    if (patternChars.hasOwnProperty(index)) {
-      calendarIndexMap[patternChars[index]] = index;
-    }
+patternChars.forEach((v, key)=> {
+  let k = key;
+  if (v === 'Y') {
+    k = GregorianCalendar.YEAR;
   }
-})();
+  if (v) {
+    calendarIndexMap[v] = k;
+  }
+});
 
 function mix(t, s) {
   for (const p in s) {
@@ -365,71 +369,78 @@ function formatField(field, count, locale, calendar) {
   let current;
   let value;
   switch (field) {
-  case 'G':
-    value = calendar.getYear() > 0 ? 1 : 0;
-    current = locale.eras[value];
-    break;
-  case 'y':
-    value = calendar.getYear();
-    if (value <= 0) {
-      value = 1 - value;
-    }
-    current = (zeroPaddingNumber(value, 2, count !== 2 ? MAX_VALUE : 2));
-    break;
-  case 'M':
-    value = calendar.getMonth();
-    if (count >= 4) {
-      current = locale.months[value];
-    } else if (count === 3) {
-      current = locale.shortMonths[value];
-    } else {
-      current = zeroPaddingNumber(value + 1, count);
-    }
-    break;
-  case 'k':
-    current = zeroPaddingNumber(calendar.getHourOfDay() || 24,
-      count);
-    break;
-  case 'E':
-    value = calendar.getDayOfWeek();
-    current = count >= 4 ?
-      locale.weekdays[value] :
-      locale.shortWeekdays[value];
-    break;
-  case 'a':
-    current = locale.ampms[calendar.getHourOfDay() >= 12 ?
-      1 :
-      0];
-    break;
-  case 'h':
-    current = zeroPaddingNumber(calendar.
+    case 'G':
+      value = calendar.getYear() > 0 ? 1 : 0;
+      current = locale.eras[value];
+      break;
+    case 'Y':
+      value = calendar.getWeekYear();
+      if (value <= 0) {
+        value = 1 - value;
+      }
+      current = (zeroPaddingNumber(value, 2, count !== 2 ? MAX_VALUE : 2));
+      break;
+    case 'y':
+      value = calendar.getYear();
+      if (value <= 0) {
+        value = 1 - value;
+      }
+      current = (zeroPaddingNumber(value, 2, count !== 2 ? MAX_VALUE : 2));
+      break;
+    case 'M':
+      value = calendar.getMonth();
+      if (count >= 4) {
+        current = locale.months[value];
+      } else if (count === 3) {
+        current = locale.shortMonths[value];
+      } else {
+        current = zeroPaddingNumber(value + 1, count);
+      }
+      break;
+    case 'k':
+      current = zeroPaddingNumber(calendar.getHourOfDay() || 24,
+        count);
+      break;
+    case 'E':
+      value = calendar.getDayOfWeek();
+      current = count >= 4 ?
+        locale.weekdays[value] :
+        locale.shortWeekdays[value];
+      break;
+    case 'a':
+      current = locale.ampms[calendar.getHourOfDay() >= 12 ?
+        1 :
+        0];
+      break;
+    case 'h':
+      current = zeroPaddingNumber(calendar.
         getHourOfDay() % 12 || 12, count);
-    break;
-  case 'K':
-    current = zeroPaddingNumber(calendar.
+      break;
+    case 'K':
+      current = zeroPaddingNumber(calendar.
         getHourOfDay() % 12, count);
-    break;
-  case 'Z':
-    let offset = calendar.getTimezoneOffset();
-    const parts = [offset < 0 ? '-' : '+'];
-    offset = Math.abs(offset);
-    parts.push(zeroPaddingNumber(Math.floor(offset / 60) % 100, 2),
-      zeroPaddingNumber(offset % 60, 2));
-    current = parts.join('');
-    break;
-  default :
-    // case 'd':
-    // case 'H':
-    // case 'm':
-    // case 's':
-    // case 'S':
-    // case 'D':
-    // case 'F':
-    // case 'w':
-    // case 'W':
-    const index = calendarIndexMap[field];
-    value = calendar.get(index);
-    current = zeroPaddingNumber(value, count);
+      break;
+    case 'Z':
+      let offset = calendar.getTimezoneOffset();
+      const parts = [offset < 0 ? '-' : '+'];
+      offset = Math.abs(offset);
+      parts.push(zeroPaddingNumber(Math.floor(offset / 60) % 100, 2),
+        zeroPaddingNumber(offset % 60, 2));
+      current = parts.join('');
+      break;
+    default :
+      // case 'd':
+      // case 'H':
+      // case 'm':
+      // case 's':
+      // case 'S':
+      // case 'D':
+      // case 'F':
+      // case 'w':
+      // case 'W':
+      const index = calendarIndexMap[field];
+      value = calendar.get(index);
+      current = zeroPaddingNumber(value, count);
   }
   return current;
 }
@@ -510,135 +521,135 @@ function parseField(calendar, dateStr, startIndex_, field, count, obeyCount, tmp
   }
   const locale = this.locale;
   switch (field) {
-  case 'G':
-    match = matchField(dateStr, startIndex, locale.eras);
-    if (match) {
-      if (calendar.isSetYear()) {
-        if (match.value === 0) {
-          year = calendar.getYear();
-          calendar.setYear(1 - year);
-        }
-      } else {
-        tmp.era = match.value;
-      }
-    }
-    break;
-  case 'y':
-    match = matchNumber.call(this, dateStr, startIndex, count, obeyCount);
-    if (match) {
-      year = match.value;
-      if ('era' in tmp) {
-        if (tmp.era === 0) {
-          year = 1 - year;
-        }
-      }
-      calendar.setYear(year);
-    }
-    break;
-  case 'M':
-    let month;
-    if (count >= 3) {
-      match = matchField(dateStr, startIndex, locale[count === 3 ?
-        'shortMonths' : 'months']);
+    case 'G':
+      match = matchField(dateStr, startIndex, locale.eras);
       if (match) {
-        month = match.value;
+        if (calendar.isSetYear()) {
+          if (match.value === 0) {
+            year = calendar.getYear();
+            calendar.setYear(1 - year);
+          }
+        } else {
+          tmp.era = match.value;
+        }
       }
-    } else {
+      break;
+    case 'y':
       match = matchNumber.call(this, dateStr, startIndex, count, obeyCount);
       if (match) {
-        month = match.value - 1;
-      }
-    }
-    if (match) {
-      calendar.setMonth(month);
-    }
-    break;
-  case 'k':
-    match = matchNumber.call(this, dateStr, startIndex, count, obeyCount);
-    if (match) {
-      calendar.setHourOfDay(match.value % 24);
-    }
-    break;
-  case 'E':
-    match = matchField(dateStr, startIndex, locale[count > 3 ?
-      'weekdays' :
-      'shortWeekdays']);
-    if (match) {
-      calendar.setDayOfWeek(match.value);
-    }
-    break;
-  case 'a':
-    match = matchField(dateStr, startIndex, locale.ampms);
-    if (match) {
-      if (calendar.isSetHourOfDay()) {
-        if (match.value) {
-          hour = calendar.getHourOfDay();
-          if (hour < 12) {
-            calendar.setHourOfDay((hour + 12) % 24);
+        year = match.value;
+        if ('era' in tmp) {
+          if (tmp.era === 0) {
+            year = 1 - year;
           }
         }
-      } else {
-        tmp.ampm = match.value;
+        calendar.setYear(year);
       }
-    }
-    break;
-  case 'h':
-    match = matchNumber.call(this, dateStr, startIndex, count, obeyCount);
-    if (match) {
-      hour = match.value %= 12;
-      if (tmp.ampm) {
-        hour += 12;
-      }
-      calendar.setHourOfDay(hour);
-    }
-    break;
-  case 'K':
-    match = matchNumber.call(this, dateStr, startIndex, count, obeyCount);
-    if (match) {
-      hour = match.value;
-      if (tmp.ampm) {
-        hour += 12;
-      }
-      calendar.setHourOfDay(hour);
-    }
-    break;
-  case 'Z':
-    // let sign = 1;
-    const zoneChar = dateStr.charAt(startIndex);
-    if (zoneChar === '-') {
-      // sign = -1;
-      startIndex++;
-    } else if (zoneChar === '+') {
-      startIndex++;
-    } else {
       break;
-    }
-    match = matchNumber.call(this, dateStr, startIndex, 2, true);
-    if (match) {
-      let zoneOffset = match.value * 60;
-      startIndex = match.startIndex;
+    case 'M':
+      let month;
+      if (count >= 3) {
+        match = matchField(dateStr, startIndex, locale[count === 3 ?
+          'shortMonths' : 'months']);
+        if (match) {
+          month = match.value;
+        }
+      } else {
+        match = matchNumber.call(this, dateStr, startIndex, count, obeyCount);
+        if (match) {
+          month = match.value - 1;
+        }
+      }
+      if (match) {
+        calendar.setMonth(month);
+      }
+      break;
+    case 'k':
+      match = matchNumber.call(this, dateStr, startIndex, count, obeyCount);
+      if (match) {
+        calendar.setHourOfDay(match.value % 24);
+      }
+      break;
+    case 'E':
+      match = matchField(dateStr, startIndex, locale[count > 3 ?
+        'weekdays' :
+        'shortWeekdays']);
+      if (match) {
+        calendar.setDayOfWeek(match.value);
+      }
+      break;
+    case 'a':
+      match = matchField(dateStr, startIndex, locale.ampms);
+      if (match) {
+        if (calendar.isSetHourOfDay()) {
+          if (match.value) {
+            hour = calendar.getHourOfDay();
+            if (hour < 12) {
+              calendar.setHourOfDay((hour + 12) % 24);
+            }
+          }
+        } else {
+          tmp.ampm = match.value;
+        }
+      }
+      break;
+    case 'h':
+      match = matchNumber.call(this, dateStr, startIndex, count, obeyCount);
+      if (match) {
+        hour = match.value %= 12;
+        if (tmp.ampm) {
+          hour += 12;
+        }
+        calendar.setHourOfDay(hour);
+      }
+      break;
+    case 'K':
+      match = matchNumber.call(this, dateStr, startIndex, count, obeyCount);
+      if (match) {
+        hour = match.value;
+        if (tmp.ampm) {
+          hour += 12;
+        }
+        calendar.setHourOfDay(hour);
+      }
+      break;
+    case 'Z':
+      // let sign = 1;
+      const zoneChar = dateStr.charAt(startIndex);
+      if (zoneChar === '-') {
+        // sign = -1;
+        startIndex++;
+      } else if (zoneChar === '+') {
+        startIndex++;
+      } else {
+        break;
+      }
       match = matchNumber.call(this, dateStr, startIndex, 2, true);
       if (match) {
-        zoneOffset += match.value;
+        let zoneOffset = match.value * 60;
+        startIndex = match.startIndex;
+        match = matchNumber.call(this, dateStr, startIndex, 2, true);
+        if (match) {
+          zoneOffset += match.value;
+        }
+        calendar.setTimezoneOffset(zoneOffset);
       }
-      calendar.setTimezoneOffset(zoneOffset);
-    }
-    break;
-  default :
-    // case 'd':
-    // case 'H':
-    // case 'm':
-    // case 's':
-    // case 'S':
-    // case 'D':
-    // case 'F':
-    // case 'w':
-    // case 'W'
-    match = matchNumber.call(this, dateStr, startIndex, count, obeyCount);
-    if (match) {
-      const index = calendarIndexMap[field];
-      calendar.set(index, match.value);
-    }
+      break;
+    default :
+      // case 'd':
+      // case 'H':
+      // case 'm':
+      // case 's':
+      // case 'S':
+      // case 'D':
+      // case 'F':
+      // case 'w':
+      // case 'W'
+      match = matchNumber.call(this, dateStr, startIndex, count, obeyCount);
+      if (match) {
+        const index = calendarIndexMap[field];
+        calendar.set(index, match.value);
+      }
   }
   if (match) {
     startIndex = match.startIndex;
