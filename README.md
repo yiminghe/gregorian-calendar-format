@@ -208,3 +208,8 @@ get a predefine GregorianCalendarFormat instance
    - GregorianCalendarFormat.Style.SHORT presents "ah:mm"
 
 * locale: require('gregorian-calendar-format/locale/en_US') or require('gregorian-calendar-format/locale/zh_CN') specify text when render localize date time string.
+
+
+## License
+
+gregorian-calendar-format is released under the MIT license.
