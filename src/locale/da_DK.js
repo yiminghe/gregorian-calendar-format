@@ -10,13 +10,13 @@ module.exports = {
   veryShortWeekdays: ['sø', 'ma', 'ti', 'on', 'to', 'fr', 'lø'],
   ampms: ['AM', 'PM'],
   datePatterns: [
-    'EEEE \d. d. MMMM yyyy',
-    '\d. d. MMMM yyyy',
-    'd. MMMM yyyy',
-    'd. MMM yyyy',
-    'dd/MM/yy',
-    'dd/MM/yyyy',
-    'yyyy-MM-dd',
+    'EEEE \d. d. MMMM yyyy',    // mandag d. 23. oktober 2015
+    '\d. d. MMMM yyyy',         // d. 23. oktober 2015
+    'd. MMMM yyyy',             // 23. oktober 2015
+    'd. MMM. yyyy',              // 23. okt. 2015
+    'dd/MM/yy',                  // 23/10/15
+    'dd/MM/yyyy',                // 23/10/2015
+    'yyyy-MM-dd',                // 2015-10-15
   ],
   timePatterns: ['HH:mm:ss \'GMT\'Z', 'HH:mm:ss', 'HH:mm'],
   dateTimePattern: '{date} {time}',
