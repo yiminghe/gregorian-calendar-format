@@ -1,0 +1,23 @@
+module.exports = {
+  eras: ['f.Kr.', 'e.Kr.'],
+  months: ['januar', 'februar', 'marts', 'april', 'maj', 'juni', 'juli',
+    'august', 'september', 'oktober', 'november', 'december'],
+  shortMonths: ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'aug', 'sep',
+    'okt', 'nov', 'dec'],
+  weekdays: ['søndag', 'mandag', 'tirsdag', 'onsdag', 'torsdag', 'fredag',
+    'lørdag'],
+  shortWeekdays: ['søn', 'man', 'tir', 'ons', 'tor', 'fre', 'lør'],
+  veryShortWeekdays: ['sø', 'ma', 'ti', 'on', 'to', 'fr', 'lø'],
+  ampms: ['AM', 'PM'],
+  datePatterns: [
+    'EEEE \d. d. MMMM yyyy',
+    '\d. d. MMMM yyyy',
+    'd. MMMM yyyy',
+    'd. MMM yyyy',
+    'dd/MM/yy',
+    'dd/MM/yyyy',
+    'yyyy-MM-dd',
+  ],
+  timePatterns: ['HH:mm:ss \'GMT\'Z', 'HH:mm:ss', 'HH:mm'],
+  dateTimePattern: '{date} {time}',
+};
