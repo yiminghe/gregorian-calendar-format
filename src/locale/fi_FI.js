@@ -1,5 +1,3 @@
-'use strict';
-
 module.exports = {
   eras: ['eKr.', 'jKr.'],
   months: ['Tammikuu', 'Helmikuu', 'Maaliskuu', 'Huhtikuu', 'Toukokuu', 'Kesäkuu', 'Heinäkuu', 'Elokuu', 'Syyskuu', 'Lokakuu', 'Marraskuu', 'Joulukuu'],
@@ -10,5 +8,5 @@ module.exports = {
   ampms: ['AM', 'PM'],
   datePatterns: ['EEEE, d MMMM yyyy', 'd MMMM yyyy', 'd MMM yyyy', 'd.M.yy'],
   timePatterns: ['k:mm:ss \'GMT\'Z', 'k:mm:ss', 'k:mm:ss', 'k:mm'],
-  dateTimePattern: '{date} {time}'
+  dateTimePattern: '{date} {time}',
 };
