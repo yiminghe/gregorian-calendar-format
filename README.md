@@ -13,11 +13,11 @@ format [gregorian-calendar](https://github.com/yiminghe/gregorian-calendar) inst
 
 ## use on node
 
-```javascript
+```js
 var GregorianCalendarFormat = require('gregorian-calendar-format');
 var GregorianCalendar = require('gregorian-calendar');
-var gregorianCalendar = new GregorianCalendar(2013,
-    GregorianCalendar.JULY, 9);
+var gregorianCalendar = new GregorianCalendar();
+gregorianCalendar.set(2013, GregorianCalendar.JULY, 9);
 var df = new GregorianCalendarFormat('yyyy-MM-dd');
 console.log(df.format(gregorianCalendar));
 df = new GregorianCalendarFormat('yy-MM-dd');
